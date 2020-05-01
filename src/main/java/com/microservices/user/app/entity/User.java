@@ -23,7 +23,7 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<ShippingAddress> shippingAddress;
 	
-	protected User() {}
+	public User() {}
 
 	public User(long userId, String firstName, String lastName, String email, String phoneNumber,
 			List<ShippingAddress> shippingAddress) {
