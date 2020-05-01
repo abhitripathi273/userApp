@@ -1,6 +1,7 @@
 package com.microservices.user.app.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.microservices.user.app.entity.User;
 import com.microservices.user.app.exception.UserNotFoundException;
 import com.microservices.user.app.repository.UserRepository;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 
 @RestController
 public class UserController {
@@ -29,12 +32,16 @@ public class UserController {
 	Environment env;
 
 	@GetMapping("/users")
-	public List<User> getUsers(){
+	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUsersFallback")
+	public List<User> getUsers() throws UserNotFoundException{
+		System.out.println("getUsers");
 		return userRepo.findAll();
 	}
 	
 	@GetMapping("/user/{userId}")
+	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUserByIdFallback", commandKey = "getUserById")
 	public User getUserById(@PathVariable String userId) throws UserNotFoundException {
+		System.out.println("getUserById");
 		Optional<User> user = userRepo.findById(Long.parseLong(userId));
 		if(!user.isPresent())
 			throw new UserNotFoundException("User ID "+userId+" is not found in DB");
@@ -62,5 +69,35 @@ public class UserController {
 
 		return "Working on port=" + env.getProperty("local.server.port") + " , "
 				+ env.getProperty("config.property.name");
+	}
+	
+	/**
+	 * Gets the user by id fallback.
+	 *
+	 * @param userId
+	 *            the user id
+	 * @return the user by id fallback
+	 */
+	public User getUserByIdFallback(String userId, Throwable throwable) {
+		if(throwable instanceof UserNotFoundException){
+			System.out.println("Unable to find the user " + userId);
+		}else if(throwable instanceof Exception){
+			System.out.println("System is down!");
+		}
+		return new User();
+	}
+
+	/**
+	 * Gets the users fallback.
+	 *
+	 * @return the users fallback
+	 */
+	public List<User> getUsersFallback(Throwable throwable) {
+		if(throwable instanceof UserNotFoundException){
+			System.out.println("Unable to find the users");
+		}else if(throwable instanceof Exception){
+			System.out.println("System is down!");
+		}
+		return new ArrayList<User>();
 	}
 }
