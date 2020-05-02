@@ -2,6 +2,7 @@ package com.microservices.user.app.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -34,6 +35,7 @@ public class UserService {
 	}
 
 	public ResponseEntity<User> createUser(User newUser) {
+		newUser.setUserId(generateUniqueId());
 		User user = userRepo.save(newUser);
 		return new ResponseEntity(user, HttpStatus.CREATED);
 	}
@@ -47,5 +49,15 @@ public class UserService {
 		return new ResponseEntity(user, HttpStatus.OK);
 	}
 	
+	private Long generateUniqueId() {
+        long uniqueUserId = -1;
+        do {
+        	uniqueUserId = UUID.randomUUID().getMostSignificantBits();
+        } while (uniqueUserId < 0);
+		String userId = String.valueOf(uniqueUserId);
+		uniqueUserId = Long.valueOf(userId.substring(0, 5));
+        return uniqueUserId;
+    
+	}
 	
 }
