@@ -3,6 +3,8 @@ package com.microservices.user.app.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 @RestController
 public class UserController {
 	
+	private static Logger log = LoggerFactory.getLogger(UserController.class);
+	
 	@Autowired
 	private UserService userService;
 	
@@ -34,13 +38,14 @@ public class UserController {
 	@GetMapping("/users")
 	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUsersFallback")
 	public List<User> getUsers() throws UserNotFoundException{
-		System.out.println("getUsers");
+		log.debug("getUsers: START");
 		return userService.getUsers();
 	}
 	
 	@GetMapping("/user/{userId}")
 	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUserByIdFallback", commandKey = "getUserById")
 	public User getUserById(@PathVariable String userId) throws UserNotFoundException {
+		log.debug("getUserById: START");
 		return userService.getUserById(userId);
 	}
 	
@@ -76,9 +81,9 @@ public class UserController {
 	 */
 	public User getUserByIdFallback(String userId, Throwable throwable) {
 		if(throwable instanceof UserNotFoundException){
-			System.out.println("Unable to find the user " + userId);
+			log.error("Unable to find the user " + userId);
 		}else if(throwable instanceof Exception){
-			System.out.println("System is down!");
+			log.error("System is down!");
 		}
 		return new User();
 	}
@@ -90,9 +95,9 @@ public class UserController {
 	 */
 	public List<User> getUsersFallback(Throwable throwable) {
 		if(throwable instanceof UserNotFoundException){
-			System.out.println("Unable to find the users");
+			log.error("Unable to find the users");
 		}else if(throwable instanceof Exception){
-			System.out.println("System is down!");
+			log.error("System is down!");
 		}
 		return new ArrayList<User>();
 	}
