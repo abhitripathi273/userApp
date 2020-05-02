@@ -19,7 +19,7 @@ public class User implements Serializable {
 	private String email;
 	private String phoneNumber;
 	private List<ShippingAddress> addressList;
-	protected User() {
+	public User() {
 	}
 
 	public User(String userId, String firstName, String lastName, String email, String phoneNumber,

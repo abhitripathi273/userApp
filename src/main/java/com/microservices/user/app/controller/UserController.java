@@ -1,5 +1,6 @@
 package com.microservices.user.app.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.microservices.user.app.entity.User;
 import com.microservices.user.app.exception.UserNotFoundException;
 import com.microservices.user.app.service.UserService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 
 @RestController
 public class UserController {
@@ -28,11 +31,14 @@ public class UserController {
 	Environment env;
 
 	@GetMapping("/users")
-	public List<User> getUsers(){
+	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUsersFallback")
+	public List<User> getUsers() throws UserNotFoundException{
+		System.out.println("getUsers");
 		return userService.getUsers();
 	}
 	
 	@GetMapping("/user/{userId}")
+	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUserByIdFallback", commandKey = "getUserById")
 	public User getUserById(@PathVariable String userId) throws UserNotFoundException {
 		return userService.getUserById(userId);
 	}
@@ -58,5 +64,35 @@ public class UserController {
 	public String getAllCovid19PatientEnv() {
 		return "Working on port=" + env.getProperty("local.server.port") + " , "
 				+ env.getProperty("config.property.name");
+	}
+	
+	/**
+	 * Gets the user by id fallback.
+	 *
+	 * @param userId
+	 *            the user id
+	 * @return the user by id fallback
+	 */
+	public User getUserByIdFallback(String userId, Throwable throwable) {
+		if(throwable instanceof UserNotFoundException){
+			System.out.println("Unable to find the user " + userId);
+		}else if(throwable instanceof Exception){
+			System.out.println("System is down!");
+		}
+		return new User();
+	}
+
+	/**
+	 * Gets the users fallback.
+	 *
+	 * @return the users fallback
+	 */
+	public List<User> getUsersFallback(Throwable throwable) {
+		if(throwable instanceof UserNotFoundException){
+			System.out.println("Unable to find the users");
+		}else if(throwable instanceof Exception){
+			System.out.println("System is down!");
+		}
+		return new ArrayList<User>();
 	}
 }
