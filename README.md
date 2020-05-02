@@ -16,39 +16,18 @@ User can able to;
  3 - POST /user
    Request Payload:
    	{
-	"userId":1,
-	"firstName": "abc",
-	"lastName" : "def",
-	"email" : "abc@gmail.com",
-	"phoneNumber": "1231231231",
-	"shippingAddress":[
-		{
-			"pinCode": 123,
-			"area" : "abc",
-			"district": "Gurgaon",
-			"state": "Haryana",
-			"country": "India",
-			"defaultAddress": true
-		}
-		]
+    "firstName": "Abhisehk",
+    "lastName": "Tripathi",
+    "email": "abc@gmail.com",
+    "phoneNumber": "6767676767"
 	}
 4 - PUT /update_user
 	Request Payload:
 	{
-	"userId":1,
-	"firstName": "def",
-	"lastName" : "def",
-	"email" : "abc@gmail.com",
-	"phoneNumber": "9898989898",
-	"shippingAddress":[
-		{
-			"pinCode": 1234,
-			"area" : "def",
-			"district": "Gurgaon",
-			"state": "Haryana",
-			"country": "India",
-			"defaultAddress": true
-		}
-		]
+    "userId": 38361,
+    "firstName": "Abhisehk",
+    "lastName": "Tripathi",
+    "email": "abhishek123@gmail.com",
+    "phoneNumber": "6767676767"
 	}
 5 - DELETE /user/{userId}
