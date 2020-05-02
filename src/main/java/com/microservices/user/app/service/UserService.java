@@ -27,7 +27,7 @@ public class UserService {
 	}
 
 	public User getUserById(String userId) throws UserNotFoundException {
-		Optional<User> user = userRepo.findById(userId);
+		Optional<User> user = userRepo.findById(Long.valueOf(userId));
 		if(!user.isPresent())
 			throw new UserNotFoundException("User is not found in DB");
 		return user.get();
@@ -39,7 +39,7 @@ public class UserService {
 	}
 
 	public void deleteUser(String userId) {
-		userRepo.deleteById(userId);
+		userRepo.deleteById(Long.valueOf(userId));
 	}
 	
 	public ResponseEntity<User> updateUser(User user){

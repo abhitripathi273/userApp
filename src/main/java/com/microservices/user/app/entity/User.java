@@ -13,7 +13,7 @@ public class User implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -4801993118744100357L;
-	private @Id String userId;
+	private @Id Long userId;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -22,7 +22,7 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(String userId, String firstName, String lastName, String email, String phoneNumber,
+	public User(Long userId, String firstName, String lastName, String email, String phoneNumber,
 			List<ShippingAddress> addressList) {
 		super();
 		this.userId = userId;
@@ -36,14 +36,14 @@ public class User implements Serializable {
 	/**
 	 * @return the userId
 	 */
-	public String getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
 	/**
 	 * @param userId the userId to set
 	 */
-	public void setUserId(String userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
