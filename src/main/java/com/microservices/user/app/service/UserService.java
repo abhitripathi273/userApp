@@ -35,8 +35,7 @@ public class UserService {
 	}
 
 	public ResponseEntity<User> createUser(User newUser) {
-		Long userId = generateUniqueId();
-		newUser.setUserId(userId);
+		newUser.setUserId(generateUniqueId());
 		User user = userRepo.save(newUser);
 		return new ResponseEntity(user, HttpStatus.CREATED);
 	}
@@ -51,13 +50,13 @@ public class UserService {
 	}
 	
 	private Long generateUniqueId() {
-        long value = -1;
+        long uniqueUserId = -1;
         do {
-            value = UUID.randomUUID().getMostSignificantBits();
-        } while (value < 0);
-		String demo = String.valueOf(value);
-		value = Long.valueOf(demo.substring(0, 5));
-        return value;
+        	uniqueUserId = UUID.randomUUID().getMostSignificantBits();
+        } while (uniqueUserId < 0);
+		String userId = String.valueOf(uniqueUserId);
+		uniqueUserId = Long.valueOf(userId.substring(0, 5));
+        return uniqueUserId;
     
 	}
 	
