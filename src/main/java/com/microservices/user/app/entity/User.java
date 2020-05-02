@@ -1,7 +1,6 @@
 package com.microservices.user.app.entity;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
@@ -18,19 +17,16 @@ public class User implements Serializable {
 	private String lastName;
 	private String email;
 	private String phoneNumber;
-	private List<ShippingAddress> addressList;
 	public User() {
 	}
 
-	public User(Long userId, String firstName, String lastName, String email, String phoneNumber,
-			List<ShippingAddress> addressList) {
+	public User(Long userId, String firstName, String lastName, String email, String phoneNumber) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.addressList = addressList;
 	}
 
 	/**
@@ -103,24 +99,10 @@ public class User implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	/**
-	 * @return the addressList
-	 */
-	public List<ShippingAddress> getAddressList() {
-		return addressList;
-	}
-
-	/**
-	 * @param addressList the addressList to set
-	 */
-	public void setAddressList(List<ShippingAddress> addressList) {
-		this.addressList = addressList;
-	}
-
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + ", addressList=" + addressList + "]";
+				+ ", phoneNumber=" + phoneNumber +"]";
 	}
 
 }
