@@ -1,27 +1,27 @@
 package com.microservices.user.app.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
-@Entity
-@Table(name="address")
-public class ShippingAddress {
+@RedisHash("address")
+public class ShippingAddress implements Serializable {
 
-	@Id
-	private Integer pinCode;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8957101786665528233L;
+	private @Id Integer pinCode;
 	private String area;
 	private String district;
 	private String state;
 	private String country;
 	private boolean defaultAddress;
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JsonIgnore
-	private User user;
+	
+	protected ShippingAddress() {}
+	
 	/**
 	 * @param pinCode
 	 * @param area
@@ -40,50 +40,116 @@ public class ShippingAddress {
 		this.state = state;
 		this.country = country;
 		this.defaultAddress = defaultAddress;
-		this.user = user;
 	}
+	
 	/**
 	 * @return the pinCode
 	 */
 	public Integer getPinCode() {
 		return pinCode;
 	}
+
+
+
+	/**
+	 * @param pinCode the pinCode to set
+	 */
+	public void setPinCode(Integer pinCode) {
+		this.pinCode = pinCode;
+	}
+
+
+
 	/**
 	 * @return the area
 	 */
 	public String getArea() {
 		return area;
 	}
+
+
+
+	/**
+	 * @param area the area to set
+	 */
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+
+
 	/**
 	 * @return the district
 	 */
 	public String getDistrict() {
 		return district;
 	}
+
+
+
+	/**
+	 * @param district the district to set
+	 */
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+
+
 	/**
 	 * @return the state
 	 */
 	public String getState() {
 		return state;
 	}
+
+
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
+	}
+
+
+
 	/**
 	 * @return the country
 	 */
 	public String getCountry() {
 		return country;
 	}
+
+
+
+	/**
+	 * @param country the country to set
+	 */
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+
+
 	/**
 	 * @return the defaultAddress
 	 */
 	public boolean isDefaultAddress() {
 		return defaultAddress;
 	}
+
+
+
 	/**
-	 * @return the user
+	 * @param defaultAddress the defaultAddress to set
 	 */
-	public User getUser() {
-		return user;
+	public void setDefaultAddress(boolean defaultAddress) {
+		this.defaultAddress = defaultAddress;
 	}
+
+
+
 	@Override
 	public String toString() {
 		return "ShippingAddress [pinCode=" + pinCode + ", area=" + area + ", district=" + district + ", state=" + state
