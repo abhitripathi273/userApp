@@ -27,7 +27,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 @RestController
 public class UserController {
 	
-	private static Logger log = LoggerFactory.getLogger(UserController.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
 	private UserService userService;
@@ -38,14 +38,14 @@ public class UserController {
 	@GetMapping("/users")
 	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUsersFallback")
 	public List<User> getUsers() throws UserNotFoundException{
-		log.debug("getUsers: START");
+		LOGGER.debug("fetching users records");
 		return userService.getUsers();
 	}
 	
 	@GetMapping("/user/{userId}")
 	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUserByIdFallback", commandKey = "getUserById")
 	public User getUserById(@PathVariable String userId) throws UserNotFoundException {
-		log.debug("getUserById: START");
+		LOGGER.debug("fetching user record with id : {}",userId);
 		return userService.getUserById(userId);
 	}
 	
@@ -59,22 +59,25 @@ public class UserController {
 	@PostMapping("/user")
 	@ResponseStatus
 	public ResponseEntity<User> createUser(@RequestBody User newUser) throws JsonProcessingException{
+		LOGGER.debug("request for creating new user");
 		return userService.createUser(newUser);
 	}
 	
 	@PutMapping("/update_user")
 	@ResponseStatus
 	public ResponseEntity<User> updateUser(@RequestBody User user) throws JsonProcessingException{
+		LOGGER.debug("request for updating user");
 		return userService.updateUser(user);
 	}
 	
 	@DeleteMapping("/user/{userId}")
 	public void deleteUser(@PathVariable String userId) {
+		LOGGER.debug("request for deleting user");
 		userService.deleteUser(userId);
 	}
 	
 	@GetMapping("/user/port")
-	public String getAllCovid19PatientEnv() {
+	public String getUserServicePort() {
 		return "Working on port=" + env.getProperty("local.server.port") + " , "
 				+ env.getProperty("config.property.name");
 	}
@@ -88,9 +91,9 @@ public class UserController {
 	 */
 	public User getUserByIdFallback(String userId, Throwable throwable) {
 		if(throwable instanceof UserNotFoundException){
-			log.error("Unable to find the user " + userId);
+			LOGGER.error("Unable to find the userId :{}",userId);
 		}else if(throwable instanceof Exception){
-			log.error("System is down!");
+			LOGGER.error("System is down!");
 		}
 		return new User();
 	}
@@ -102,9 +105,9 @@ public class UserController {
 	 */
 	public List<User> getUsersFallback(Throwable throwable) {
 		if(throwable instanceof UserNotFoundException){
-			log.error("Unable to find the users");
+			LOGGER.error("Unable to find the users.");
 		}else if(throwable instanceof Exception){
-			log.error("System is down!");
+			LOGGER.error("System is down!");
 		}
 		return new ArrayList<User>();
 	}
