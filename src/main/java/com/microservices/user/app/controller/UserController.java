@@ -49,6 +49,13 @@ public class UserController {
 		return userService.getUserById(userId);
 	}
 	
+	@GetMapping("/authenticate/user/{userId}")
+	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUserByIdFallback", commandKey = "getUserById")
+	public User getAuthUserById(@PathVariable String userId) throws UserNotFoundException {
+		log.debug("getAuthUserById: START");
+		return userService.getUserById(userId);
+	}
+	
 	@PostMapping("/user")
 	@ResponseStatus
 	public ResponseEntity<User> createUser(@RequestBody User newUser) throws JsonProcessingException{

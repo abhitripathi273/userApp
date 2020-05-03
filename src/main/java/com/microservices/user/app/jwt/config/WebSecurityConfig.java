@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 * anyRequest().authenticated().and().antMatcher("/user/{userId}").
 		 * 
 		 */
-		httpSecurity.requestMatcher(new AntPathRequestMatcher("/user/{userId}", HttpMethod.GET.toString())).
+		httpSecurity.requestMatcher(new AntPathRequestMatcher("/authenticate/user/{userId}", HttpMethod.GET.toString())).
 		authorizeRequests().anyRequest().authenticated().and().
 		
 				// make sure we use stateless session; session won't be used to
