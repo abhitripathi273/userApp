@@ -52,7 +52,7 @@ Response
    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyYW1pdCIsImV4cCI6MTU4ODQ5MjczMSwiaWF0IjoxNTg4NDc0NzMxfQ.O98N1kTV0qhE_a3R8KCA55StX7GZGT-Ymyu6fu9Nor6QU7BxA78D0TUCfsXVViieh7L1MI9kUdIHjIaztikOXg"
 }
 
-2.This Token Can only be used in user/{userId} api .
+2.This Token Can only be used in /authenticate/user/{userId} api .
 with Header 
 Authorization -- Bearer
 eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyYW1pdCIsImV4cCI6MTU4ODQ5MjczMSwiaWF0IjoxNTg4NDc0NzMxfQ.O98N1kTV0qhE_a3R8KCA55StX7GZGT-Ymyu6fu9Nor6QU7BxA78D0TUCfsXVViieh7L1MI9kUdIHjIaztikOXg
