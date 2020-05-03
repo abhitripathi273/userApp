@@ -6,6 +6,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import com.microservices.user.app.repository.UserRepository;
 @Service
 public class UserService { 
 	
+	private static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+	
 	@Autowired
 	private UserRepository userRepo;
 
@@ -29,23 +33,30 @@ public class UserService {
 
 	public User getUserById(String userId) throws UserNotFoundException {
 		Optional<User> user = userRepo.findById(Long.valueOf(userId));
-		if(!user.isPresent())
+		if(!user.isPresent()) {
+			LOGGER.error("Unable to find the users.");
 			throw new UserNotFoundException("User is not found in DB");
+		}
+		LOGGER.debug("user found with userId: {}",userId);
 		return user.get();
 	}
 
 	public ResponseEntity<User> createUser(User newUser) {
-		newUser.setUserId(generateUniqueId());
+		Long userId = generateUniqueId();
+		newUser.setUserId(userId);
 		User user = userRepo.save(newUser);
+		LOGGER.debug("user created with userId: {}",userId);
 		return new ResponseEntity(user, HttpStatus.CREATED);
 	}
 
 	public void deleteUser(String userId) {
 		userRepo.deleteById(Long.valueOf(userId));
+		LOGGER.debug("user deleted successfully");
 	}
 	
 	public ResponseEntity<User> updateUser(User user){
 		userRepo.save(user);
+		LOGGER.debug("user updated successfully");
 		return new ResponseEntity(user, HttpStatus.OK);
 	}
 	
