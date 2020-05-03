@@ -70,7 +70,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/user/port")
-	public String getAllCovid19PatientEnv() {
+	public String getUserServicePort() {
 		return "Working on port=" + env.getProperty("local.server.port") + " , "
 				+ env.getProperty("config.property.name");
 	}
