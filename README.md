@@ -16,7 +16,9 @@ User can able to;
  API Endpoints:
  
  1 - GET /users
+ 
  2 - GET /user/{userId}
+ 
  3 - POST /user
    Request Payload:
    	{
