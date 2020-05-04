@@ -52,7 +52,7 @@ public class UserController {
 	@GetMapping("/authenticate/user/{userId}")
 	@HystrixCommand(groupKey="UserMicroService", fallbackMethod="getUserByIdFallback", commandKey = "getUserById")
 	public User getAuthUserById(@PathVariable String userId) throws UserNotFoundException {
-		log.debug("getAuthUserById: START");
+		LOGGER.debug("getAuthUserById: START");
 		return userService.getUserById(userId);
 	}
 	
