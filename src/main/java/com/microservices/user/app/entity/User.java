@@ -2,6 +2,10 @@ package com.microservices.user.app.entity;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
@@ -13,9 +17,14 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = -4801993118744100357L;
 	private @Id Long userId;
+	@NotEmpty(message = "Please Provide FirstName")
 	private String firstName;
 	private String lastName;
+	@NotEmpty(message = "Please Provide email")
+	@Email(message = "Enter a valid email address.")
 	private String email;
+	@NotEmpty(message = "Please Provide phoneNumber")
+	@Pattern(regexp="(^$|[0-9]{10})")
 	private String phoneNumber;
 	public User() {
 	}

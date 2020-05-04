@@ -3,6 +3,8 @@ package com.microservices.user.app.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,14 +53,14 @@ public class UserController {
 	
 	@PostMapping("/user")
 	@ResponseStatus
-	public ResponseEntity<User> createUser(@RequestBody User newUser) throws JsonProcessingException{
+	public ResponseEntity<User> createUser(@Valid @RequestBody User newUser) throws JsonProcessingException{
 		LOGGER.debug("request for creating new user");
 		return userService.createUser(newUser);
 	}
 	
 	@PutMapping("/update_user")
 	@ResponseStatus
-	public ResponseEntity<User> updateUser(@RequestBody User user) throws JsonProcessingException{
+	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) throws JsonProcessingException{
 		LOGGER.debug("request for updating user");
 		return userService.updateUser(user);
 	}
